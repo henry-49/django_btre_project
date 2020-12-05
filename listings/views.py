@@ -1,7 +1,8 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from .models import Listing
+from .models import Realtor
 
 
 
@@ -24,7 +25,16 @@ def index(request):
     return render(request, 'listings/listings.html', context)
 
 def listing(request, listing_id):
-    return render(request, 'listings/listing.html')
+    # Get listing or displays 404 page
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    
+    # Creating dictonary
+    context = {
+        'listing' : listing
+    }
+
+    return render(request, 'listings/listing.html', context)
 
 def search(request):
     return render(request, 'listings/search.html')
