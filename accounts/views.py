@@ -27,6 +27,7 @@ def register(request):
                    messages.error(request, 'email is being in used')
                    return redirect('register')
                 else:
+                    # Create new user
                     user = User.objects.create_user(username=username, password=password,
                      email=email, first_name=first_name, last_name=last_name)
                      # Login after register
@@ -45,11 +46,22 @@ def register(request):
     else:
         return render(request, 'accounts/register.html')
 
-
+# Login User
 def login(request):
     if request.method == 'POST':
-        # Login User
-        return
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'You are now logged in')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Invalid credentials')
+            return redirect('login')
+
     else:
      return render(request, 'accounts/login.html')
 
