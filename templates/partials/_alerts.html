@@ -10,7 +10,7 @@
         <strong>
             <!-- Check if message is an error -->
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                Error 
+                Error:
             {% else %}
                 {{ message.tags | title }}
             {% endif %}
